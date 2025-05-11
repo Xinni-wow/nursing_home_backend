@@ -115,6 +115,11 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'EXCEPTION_HANDLER': 'common.custom_exception_handler.custom_exception_handler',
+    'DEFAULT_RENDERER_CLASSES': [
+        'common.custom_renderer.CustomJSONRenderer',
+        # ...
+    ],
 }
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -126,6 +131,12 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
+
+# #把英文改为中文
+# LANGUAGE_CODE = 'zh-hans'
+#
+# #把国际时区改为中国时区
+# TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -142,3 +153,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
+
+# 图片路径
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

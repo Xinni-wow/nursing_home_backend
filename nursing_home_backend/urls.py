@@ -19,9 +19,24 @@ from django.urls import path
 
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('accounts.urls')),
-    path('api/elder/', include('elders.urls')),
+    path('admin/', admin.site.urls), # 超级后台管理员
+
+    # 登录和个人信息
+    path('api/auth/', include('accounts.auth_urls')),
+    path('api/relative/', include('accounts.relative_urls')),#（亲属）用户端
+    path('api/staff/', include('accounts.staff_urls')),#（工作人员）管理端
+
+    # 老人管理模块
+    path('api/relative/elders/', include('elders.relative_urls')),#（亲属）用户端
+    path('api/staff/elders/', include('elders.staff_urls')),#（工作人员）管理端
+
+    #health
+    path('api/health/', include('health.urls'))
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
