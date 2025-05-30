@@ -42,10 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'django_extensions',
     'corsheaders',
     'accounts',
     'elders',
     'health',
+    'outing',
+    'appointment',
+    'diet',
 ]
 
 MIDDLEWARE = [
@@ -89,7 +93,7 @@ DATABASES = {
         'NAME': 'nursing_home',
         'USER': 'root',
         'PASSWORD': '123456',
-        'PORT': 3306,
+        'PORT': 3308,
     }
 }
 

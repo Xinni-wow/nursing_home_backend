@@ -43,4 +43,4 @@ for elder in elders:
 # 批量插入
 HealthRecord.objects.bulk_create(records_to_create)
 
-print(f"✅ 已为老人ID {elder_ids} 批量添加 {len(records_to_create)} 条健康记录。")
+print(f"已为老人ID {elder_ids} 批量添加 {len(records_to_create)} 条健康记录。")
