@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+
 urlpatterns = [
     path('register/', register_user), # 注册(仅对用户开放）
     path('login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),  # 登录
