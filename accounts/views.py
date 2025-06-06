@@ -87,7 +87,6 @@ def update_myself_info(request):
         return Response({"detail": "信息更新成功"})
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 #  修改密码（还没用上）
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -108,35 +107,34 @@ def list_users(request):
     serializer = UserInfoSerializer(users, many=True)
     return Response(serializer.data)
 
-# (管理员)根据用户名查找用户
-# @api_view(['GET'])
-# @permission_classes([IsStaffUserOnly])
-# def search_user(request, username):
-#     users = CustomUser.objects.filter(user_type='relative',username__icontains=username)
-#     serializer = UserInfoSerializer(users, many=True)
-#     return Response(serializer.data)
+#(管理员)多条件查询用户
 @api_view(['GET'])
 @permission_classes([IsStaffUserOnly])
-def search_user(request):
-    username = request.GET.get('username')
+def search_user_combined(request):
+    username = request.GET.get('username', None)
+    full_name = request.GET.get('full_name', None)
+    elder_name = request.GET.get('elder_name', None)
 
-    if not username:
-        return Response({"error": "缺少 username 参数"}, status=400)
+    if not any([username, full_name, elder_name]):
+        return Response({"error": "至少提供一个查询参数: username, full_name 或 elder_name"}, status=400)
 
-    users = CustomUser.objects.filter(user_type='relative', username__icontains=username)
-    serializer = UserInfoSerializer(users, many=True)
-    return Response(serializer.data)
+    # 主查询集
+    users = CustomUser.objects.filter(user_type='relative')
 
+    # 用户名模糊匹配
+    if username:
+        users = users.filter(username__icontains=username)
 
-# (管理员)根据真实姓名查找用户
-@api_view(['GET'])
-@permission_classes([IsStaffUserOnly])
-def search_user_by_name(request):
-    # 从查询参数中获取 name
-    name = request.GET.get('name')
-    if not name:
-        return Response({"error": "缺少 name 参数"}, status=400)
-    users = CustomUser.objects.filter(user_type='relative', full_name__icontains=name)
+    # 真实姓名模糊匹配
+    if full_name:
+        users = users.filter(full_name__icontains=full_name)
+
+    # 老人姓名匹配
+    if elder_name:
+        elders = Elder.objects.filter(full_name__icontains=elder_name)
+        user_ids = elders.values_list('user_id', flat=True).distinct()
+        users = users.filter(id__in=user_ids)
+
     serializer = UserInfoSerializer(users, many=True)
     return Response(serializer.data)
 
@@ -170,18 +168,3 @@ def delete_user(request, pk):
         return Response({'error': '用户不存在'}, status=404)
     except ProtectedError:
         return Response({'error': '该用户已绑定老人信息，无法删除'}, status=400)
-
-
-@api_view(['GET'])
-@permission_classes([IsStaffUserOnly])
-def search_user_by_elder_name(request):
-    elder_name = request.GET.get('elder_name')
-    if not elder_name:
-        return Response({"error": "缺少 elder_name 参数"}, status=400)
-
-    # 查找绑定该老人姓名的用户
-    elders = Elder.objects.filter(full_name__icontains=elder_name)
-    user_ids = elders.values_list('user_id', flat=True).distinct()
-    users = CustomUser.objects.filter(id__in=user_ids, user_type='relative')
-    serializer = UserInfoSerializer(users, many=True)
-    return Response(serializer.data)
