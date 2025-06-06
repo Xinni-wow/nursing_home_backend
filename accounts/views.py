@@ -148,11 +148,13 @@ def update_user(request, pk):
         return Response({'error': '用户不存在'}, status=404)
 
     partial = request.method == 'PATCH'
-    serializer = UserInfoSerializer(user, data=request.data, partial=partial)
+    serializer = UserUpdateSerializer(user, data=request.data, partial=partial)
+
     if serializer.is_valid():
         serializer.save()
         return Response({'msg': '用户信息更新成功'})
-    return Response(serializer.errors, status=400)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 # （管理员）删除用户
 from django.db.models import ProtectedError

@@ -139,6 +139,19 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("该用户名已存在，请换一个用户名")
         return value
 
+    # 添加手机号校验
+    def validate_phone(self, value):
+        if value and not re.match(r'^1[3-9]\d{9}$', value):
+            raise serializers.ValidationError("请输入有效的中国大陆手机号码")
+        return value
+
+    # 添加邮箱校验
+    def validate_email(self, value):
+        if value and not re.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', value):
+            raise serializers.ValidationError("请输入有效的邮箱地址")
+        return value
+
+
 
 
 # 修改密码
