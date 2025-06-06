@@ -14,6 +14,7 @@ class HealthRecord(models.Model):
     respiratory_rate = models.IntegerField(null=True, blank=True, help_text="单位：次/分钟")
     oxygen_saturation = models.FloatField(null=True, blank=True, help_text="单位：%")
     weight = models.FloatField(null=True, blank=True, help_text="单位：kg")
+    notes = models.TextField(null=True, blank=True, help_text="其他备注信息")
 
     created_at = models.DateTimeField(auto_now_add=True)
 
