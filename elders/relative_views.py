@@ -72,7 +72,7 @@ def delete_elder(request, pk):
         elder.delete()
     except ProtectedError:
         return Response({
-            'error': '无法删除该老人，因为存在关联数据（如入住记录、健康档案等）'
+            'error': '无法删除该老人，因为存在关联数据（如入住记录、健康信息等）'
         }, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({'msg': '老人信息删除成功'}, status=status.HTTP_200_OK)

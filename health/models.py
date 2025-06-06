@@ -3,7 +3,7 @@ from elders.models import Elder
 from django.utils import timezone
 
 class HealthRecord(models.Model):
-    elder = models.ForeignKey(Elder, on_delete=models.CASCADE, related_name='health_records')
+    elder = models.ForeignKey(Elder, on_delete=models.PROTECT, related_name='health_records')
     date = models.DateField(default=timezone.now)
 
     temperature = models.FloatField(null=True, blank=True, help_text="单位：°C")
