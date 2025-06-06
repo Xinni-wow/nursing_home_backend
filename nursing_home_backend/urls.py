@@ -28,14 +28,23 @@ urlpatterns = [
     # 登录和个人信息
     path('api/auth/', include('accounts.auth_urls')),
     path('api/relative/', include('accounts.relative_urls')),#（亲属）用户端
-    path('api/staff/', include('accounts.staff_urls')),#（工作人员）管理端
+    path('api/staff/', include('accounts.staff_urls')),#（工作人员）管理端)
 
     # 老人管理模块
     path('api/relative/elders/', include('elders.relative_urls')),#（亲属）用户端
     path('api/staff/elders/', include('elders.staff_urls')),#（工作人员）管理端
 
     #health
-    path('api/health/', include('health.urls'))
+    path('api/health/', include('health.urls')),
+    #outing(外出申请)
+    path('api/relative/outing/',include('outing.relative_urls')),
+    path('api/staff/outing/',include('outing.staff_urls')),
+    #appointment（预约）
+    path('api/relative/appointment/',include('appointment.relative_urls')),
+    path('api/staff/appointment/',include('appointment.staff_urls')),
+    #diet（饮食）
+    path('api/relative/diet/',include('diet.relative_urls')),
+    path('api/staff/diet/',include('diet.staff_urls')),
 ]
 
 if settings.DEBUG:
