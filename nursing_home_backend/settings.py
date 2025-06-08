@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'outing',
     'appointment',
     'diet',
+    'checkin',
 ]
 
 MIDDLEWARE = [
@@ -92,8 +93,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'nursing_home',
         'USER': 'root',
-        'PASSWORD': '123456',
-        'PORT': 3308,
+        'PASSWORD': 'zjn6575013',
+        'PORT': 3306,
     }
 }
 
@@ -122,8 +123,10 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'common.custom_exception_handler.custom_exception_handler',
     'DEFAULT_RENDERER_CLASSES': [
         'common.custom_renderer.CustomJSONRenderer',
-        # ...
     ],
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -163,3 +166,12 @@ import os
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+ALIPAY_CONFIG = {
+    'APP_ID': '9021000133613194',
+    'GATEWAY': 'https://openapi-sandbox.dl.alipaydev.com/gateway.do',
+    'APP_PRIVATE_KEY_PATH': os.path.join(BASE_DIR, 'nursing_home_backend/keys/app_private_key.pem'),
+    'ALIPAY_PUBLIC_KEY_PATH': os.path.join(BASE_DIR, 'nursing_home_backend/keys/app_public_key.pem'),
+    'RETURN_URL': 'http://localhost:5173/payment-success',
+    'NOTIFY_URL': 'https://82ef-2001-250-4003-4-00-a5ac.ngrok-free.app/api/alipay/notify/',
+}
