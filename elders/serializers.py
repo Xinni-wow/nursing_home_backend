@@ -39,6 +39,22 @@ class ElderSerializer(serializers.ModelSerializer):
         }
     )
 
+    gender = serializers.CharField(
+        error_messages={
+            'required': '性别不能为空',
+            'blank': '性别不能为空',
+            'null': '性别不能为空'
+        }
+    )
+
+    health_status = serializers.CharField(
+        error_messages={
+            'required': '健康状况不能为空',
+            'blank': '健康状况不能为空',
+            'null': '健康状况不能为空'
+        }
+    )
+
     class Meta:
         model = Elder
         fields = ['id', 'photo', 'full_name','relationship' , 'gender', 'birth_date', 'age',

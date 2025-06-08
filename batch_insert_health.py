@@ -12,7 +12,7 @@ from health.models import HealthRecord
 from elders.models import Elder
 
 # 获取指定的两位老人
-elder_ids = [1, 8]
+elder_ids = [4, 8]
 elders = Elder.objects.filter(id__in=elder_ids)
 
 # 生成近 14 天的数据
@@ -29,16 +29,17 @@ for elder in elders:
         record = HealthRecord(
             elder=elder,
             date=d,
-            temperature=round(random.uniform(36.2, 37.5), 1),
-            blood_pressure_systolic=random.randint(110, 130),
-            blood_pressure_diastolic=random.randint(70, 85),
-            heart_rate=random.randint(60, 90),
-            blood_sugar=round(random.uniform(4.5, 6.5), 1),
-            respiratory_rate=random.randint(14, 20),
-            oxygen_saturation=round(random.uniform(95, 99), 1),
-            weight=round(random.uniform(50, 70), 1)
+            temperature=round(random.uniform(36.5, 37.2), 1),  # 正常体温
+            blood_pressure_systolic=random.randint(115, 125),  # 更精确的收缩压
+            blood_pressure_diastolic=random.randint(75, 80),   # 更精确的舒张压
+            heart_rate=random.randint(60, 80),                 # 心率
+            blood_sugar=round(random.uniform(4.7, 5.6), 1),    # 血糖
+            respiratory_rate=random.randint(16, 18),           # 呼吸频率
+            oxygen_saturation=round(random.uniform(97, 99), 1),# 血氧
+            weight=round(random.uniform(65.0, 67.0), 1)        # 体重小幅变化
         )
         records_to_create.append(record)
+
 
 # 批量插入
 HealthRecord.objects.bulk_create(records_to_create)
