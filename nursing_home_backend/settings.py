@@ -93,7 +93,7 @@ DATABASES = {
         'NAME': 'nursing_home',
         'USER': 'root',
         'PASSWORD': '123456',
-        'PORT': 3306,
+        'PORT': 3308,
     }
 }
 
