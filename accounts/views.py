@@ -10,7 +10,7 @@ from .models import CustomUser
 from .serializers import RegisterSerializer, UserInfoSerializer, UserUpdateSerializer, PasswordChangeSerializer
 
 
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from common.permissions import IsStaffUserOnly
 
 
@@ -25,6 +25,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
 # 注册用户(仅对亲属用户开放）
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def register_user(request):
     serializer = RegisterSerializer(data=request.data)
     if serializer.is_valid():
@@ -33,7 +34,9 @@ def register_user(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # 找回密码
+# 获取密保问题
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def retrieve_security_question(request):
     username = request.data.get('username')
     try:
@@ -53,7 +56,9 @@ def retrieve_security_question(request):
     except CustomUser.DoesNotExist:
         return Response({'message': '用户不存在'}, status=status.HTTP_404_NOT_FOUND)
 
+# 密码重置
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def reset_password(request):
     username = request.data.get('username')
     security_answer = request.data.get('security_answer')
